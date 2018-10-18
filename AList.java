@@ -13,7 +13,7 @@ public class AList <T> implements ListInterface <T>   {
     }
     
     public AList(int capacity) {
-        if (capacity < DEFAULT_CAPACITY)
+        if (capacity <= DEFAULT_CAPACITY)
             capacity = DEFAULT_CAPACITY;
         else
             ensureCapacity();
@@ -175,5 +175,11 @@ public class AList <T> implements ListInterface <T>   {
     		return true;
     	}
     	return false;
+    }
+    
+    public void printList() {
+    	for(int i = 0; i < numberOfEntries; i++) {
+    		System.out.println(list[i]);
+    	}
     }
 }
