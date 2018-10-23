@@ -98,7 +98,7 @@ public class LinkedList <T> implements ListInterface <T>{
 			Node curr = firstNode.getNext();
 			Node beforeCurr = firstNode;
 			
-			while(curr != newNode) {
+			while(curr.getData() != anEntry) {
 				beforeCurr = curr;
 				curr = curr.getNext();
 			}

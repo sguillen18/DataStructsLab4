@@ -74,10 +74,10 @@ public class AList <T> implements ListInterface <T>   {
     }
     
     private void removeGap(int position) {
-    	for(int i=0; i < numberOfEntries-1; i++) {
-    		list[position] = list[position+1];
-    		list[numberOfEntries-1] = null;
+    	for(int i=position; i < numberOfEntries-1; i++) {
+    		list[i] = list[i+1];
     	}
+    	list[numberOfEntries - 1] = null;
     }
     
     //should this be a void?
@@ -93,9 +93,10 @@ public class AList <T> implements ListInterface <T>   {
     }
 
     public boolean remove (T anEntry) {
-    	for(int i=0; i<numberOfEntries; i++) {
+    	for(int i=0; i<numberOfEntries-1; i++) {
     		if(anEntry.equals(list[i])) {
     			removeGap(i);
+    			numberOfEntries--;
     			return true;
     		}
     			

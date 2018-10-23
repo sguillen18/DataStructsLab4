@@ -13,6 +13,47 @@ public class Test {
 		testList.add(6);
 		testList.printList();
 		
+		AList<Character> testListChar = new AList<Character>();
+		LinkedList <Character> linkedListChar = new LinkedList <Character>();
+		
+		testListChar.add('f');
+		testListChar.add('o');
+		testListChar.add('x');
+		testListChar.add(',');
+		
+		linkedListChar.add('f');
+		linkedListChar.add('o');
+		linkedListChar.add('x');
+		linkedListChar.add(',');
+		
+		for(int i = 0; i < (testListChar.getLength()); i++) {
+			System.out.println(testListChar.getEntry(i));
+		}
+		
+		System.out.println("testListChar has x: " + testListChar.contains('x'));
+		
+		testListChar.remove((Character) 'x');
+		
+		for(int i = 0; i < (testListChar.getLength()); i++) {
+			System.out.println(testListChar.getEntry(i));
+		}
+		
+		System.out.println("testListChar has x: " + testListChar.contains('x'));
+		
+		for(int i = 0; i < (linkedListChar.getLength()); i++) {
+			System.out.println(linkedListChar.getEntry(i));
+		}
+		
+		System.out.println("linkedListChar has x: " + linkedListChar.contains('x'));
+		
+		linkedListChar.remove((Character)'x');
+		
+		for(int i = 0; i < (testListChar.getLength()); i++) {
+			System.out.println(testListChar.getEntry(i));
+		}
+		
+		System.out.println("testListChar has x" + linkedListChar.contains('x'));
+		
 		File inFile = new File("C:\\Users\\hillg2\\Documents\\2018 Fall\\Data Structures\\Lab\\foxandcat.txt");
 		
 		Scanner sc = new Scanner(inFile);
@@ -42,14 +83,15 @@ public class Test {
 					  stList.add(stArray[i]);
 				  }
 				  
-				  if(stList.contains('.')) {stList.remove('.');}
-				  if(stList.contains('?')) {stList.remove('?');}
-				  if(stList.contains('\'')) {stList.remove('\'');}
-				  if(stList.contains(',')) {stList.remove(',');}
-				  if(stList.contains(':')) {stList.remove(':');}
-				  if(stList.contains(';')) {stList.remove(';');}
-				  if(stList.contains('!')) {stList.remove('!');}
-				  if(stList.contains('\"')) {stList.remove('\"');}
+				  if(stList.contains('.')) {stList.remove((Character)'.');}
+				  if(stList.contains('?')) {stList.remove((Character)'?');}
+				  if(stList.contains('\'')) {stList.remove((Character)'\'');}
+				  if(stList.contains(',')) {stList.remove((Character)',');}
+				  if(stList.contains(':')) {stList.remove((Character)':');}
+				  if(stList.contains(';')) {stList.remove((Character)';');}
+				  if(stList.contains('!')) {stList.remove((Character)'!');}
+				  if(stList.contains('\"')) {stList.remove((Character)'\"');}
+				  if(stList.contains('\'')) {stList.remove((Character)'\'');}
 				  
 				  String noApost = "";
 				  for(int i = 0; (stList.getLength() - 1) > i; i++) { 
