@@ -132,13 +132,14 @@ public class LinkedList <T> implements ListInterface <T>{
 	}
 
 	public T getEntry(int givenPosition) {
-		Node pos = firstNode;
-		if(givenPosition < 0)
-		for(int i = 0; givenPosition <= i; i++) {
-			pos = pos.getNext();
+		assert(givenPosition >= 0 && givenPosition < getLength());
+		Node curr = firstNode;
+		for(int i = 0; i < givenPosition; i++) {
+			curr = curr.getNext();
 		}
-		return pos.getData();
-		}
+		return curr.getData();
+		
+	}
 	
 	public boolean contains(T anEntry) {
 		Node pos = firstNode;
