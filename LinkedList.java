@@ -40,6 +40,7 @@ public class LinkedList <T> implements ListInterface <T>{
 		public void setNext(Node newNext) {
 			next = newNext;
 		}
+		
 	}
 
 	public void add(T newEntry) {
@@ -70,44 +71,51 @@ public class LinkedList <T> implements ListInterface <T>{
 		numberOfEntries++;
 	}
 
-	public T remove(int givenPosition) {
-		if(givenPosition < 0 || (givenPosition > (numberOfEntries - 1))) {
-			throw new NullPointerException();
+	public T remove (int givenPosition){
+		   if (isEmpty())
+		      throw new NullPointerException();
+		   if (givenPosition < 0 || givenPosition >= getLength())
+		      throw new IndexOutOfBoundsException();
+		   T dataItem = firstNode.getData();
+		            
+		   if (givenPosition == 0)
+		      firstNode = firstNode.getNext();
+		   else {
+		      Node currNode = getNodeAt(givenPosition -1);
+		      dataItem = currNode.getNext().getData();
+		      currNode.setNext(currNode.getNext().getNext());
+		    }
+		   return dataItem;
 		}
-		Node pos = firstNode;
-		for(int i = 0; givenPosition > i; i++) {
-			pos = pos.getNext();
-		}
-		Node toRemove = pos.getNext();
-		pos.setNext(toRemove.getNext());
-		numberOfEntries --;
-		
-		return toRemove.getData();
-		
-	}
+
+
+	private Node getNodeAt(int givenPosition) {
+		   assert (givenPosition >= 0 && givenPosition < getLength());
+		 
+		   Node currentNode = firstNode;
+		   for (int idx = 0; idx < givenPosition; idx ++)
+		       currentNode = currentNode.getNext();
+		    return currentNode;
+		 }
 
 	public boolean remove(T anEntry) {
-		if(isEmpty()) {
-			return false;
-		}
-		else if (!contains(anEntry)) {
-			return false;
-		}
-		else {
-			Node newNode = new Node(anEntry);
-			Node curr = firstNode.getNext();
-			Node beforeCurr = firstNode;
-			
-			while(curr.getData() != anEntry) {
-				beforeCurr = curr;
-				curr = curr.getNext();
-			}
-			
-			beforeCurr.setNext(curr.getNext());
-			numberOfEntries --;
-			
-			return true;
-		}
+		int i=0;
+		
+	    Node nextNode = firstNode;
+	    for (Node currNode = firstNode; nextNode != null; 
+	                                     currNode = nextNode) {
+	          if((currNode.getData()).equals(anEntry)) {
+	        	  remove(i);
+	        	  numberOfEntries--;
+	        	  return true;
+	          }
+	          
+	          nextNode = currNode.getNext();
+	          i++; 
+	     }
+	     
+		return false;
+
 	}
 
 	public void clear() {
@@ -125,7 +133,8 @@ public class LinkedList <T> implements ListInterface <T>{
 
 	public T getEntry(int givenPosition) {
 		Node pos = firstNode;
-		for(int i = 0; givenPosition > i; i++) {
+		if(givenPosition < 0)
+		for(int i = 0; givenPosition <= i; i++) {
 			pos = pos.getNext();
 		}
 		return pos.getData();
@@ -135,7 +144,7 @@ public class LinkedList <T> implements ListInterface <T>{
 		Node pos = firstNode;
 
 		while(pos != null) {
-			if(pos.getData().equals(anEntry)) {
+			if((pos.getData()).equals(anEntry)) {
 				return true;
 			}
 			pos = pos.getNext();
