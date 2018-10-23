@@ -28,8 +28,9 @@ public class Test {
 		linkedListChar.add(',');
 		
 		for(int i = 0; i < (testListChar.getLength()); i++) {
-			System.out.println(testListChar.getEntry(i));
+			System.out.print(testListChar.getEntry(i));
 		}
+		System.out.print('\n');
 		
 		System.out.println("testListChar has x: " + testListChar.contains('x'));
 		
@@ -38,12 +39,14 @@ public class Test {
 		for(int i = 0; i < (testListChar.getLength()); i++) {
 			System.out.print(testListChar.getEntry(i));
 		}
+		System.out.print('\n');
 		
 		System.out.println("testListChar has x: " + testListChar.contains('x'));
 		
 		for(int i = 0; i < (linkedListChar.getLength()); i++) {
 			System.out.print(linkedListChar.getEntry(i));
 		}
+		System.out.print('\n');
 		
 		System.out.println("linkedListChar contains \': " + linkedListChar.contains('\''));
 		System.out.println("linkedListChar has x: " + linkedListChar.contains('x'));
@@ -53,11 +56,13 @@ public class Test {
 		for(int i = 0; i < (linkedListChar.getLength()); i++) {
 			System.out.print(linkedListChar.getEntry(i));
 		}
+		System.out.print('\n');
 		
 		linkedListChar.remove((Character)'\'');
 		for(int i = 0; i < (linkedListChar.getLength()); i++) {
 			System.out.print(linkedListChar.getEntry(i));
 		}
+		System.out.print('\n');
 		
 		System.out.println("testListChar has x" + linkedListChar.contains('x'));
 		

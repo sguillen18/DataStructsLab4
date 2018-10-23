@@ -81,9 +81,18 @@ public class LinkedList <T> implements ListInterface <T>{
 		   if (givenPosition == 0)
 		      firstNode = firstNode.getNext();
 		   else {
-		      Node currNode = getNodeAt(givenPosition -1);
-		      dataItem = currNode.getNext().getData();
-		      currNode.setNext(currNode.getNext().getNext());
+		       int idx = 0;
+		       Node nextNode = firstNode;
+		       for (Node currNode = firstNode; nextNode != null; currNode = nextNode) {
+		          idx ++;
+		          nextNode = currNode.getNext();
+		          if (idx == givenPosition ){ // nextNode is to be removed 
+		             assert (nextNode != null);
+		             dataItem = nextNode.getData();
+		             currNode.setNext(nextNode.getNext());
+		             break;
+		          }
+		       }
 		    }
 		   return dataItem;
 		}
@@ -133,11 +142,7 @@ public class LinkedList <T> implements ListInterface <T>{
 
 	public T getEntry(int givenPosition) {
 		assert(givenPosition >= 0 && givenPosition < getLength());
-		Node curr = firstNode;
-		for(int i = 0; i < givenPosition; i++) {
-			curr = curr.getNext();
-		}
-		return curr.getData();
+		return getNodeAt(givenPosition).getData();
 		
 	}
 	
