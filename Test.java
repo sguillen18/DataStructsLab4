@@ -1,10 +1,15 @@
 package Lab4;
-import java.io.* ;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
+
 
 public class Test {
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
 		AList<Integer> testList = new AList<Integer>();
 		LinkedList <String> linkedList = new LinkedList <String>();
@@ -70,54 +75,113 @@ public class Test {
 		
 		Scanner sc = new Scanner(inFile);
 		
-		File file = new File("c://temp//lab4ListOfWords.txt");
-		  
-		//Create the file
-		if (file.createNewFile())
-		{
-		    System.out.println("File is created!");
-		} else {
-		    System.out.println("File already exists.");
-		}
-		 
+		AList<String> arrayList = new AList<>();
+		LinkedList<String>  linkList = new LinkedList<>();
+
 		//Write Content
-		FileWriter writer = new FileWriter(file);
-		writer.write("Test data");
+		//FileWriter writer = new FileWriter(file);
+		//writer.write("Test data");
 		  
 		String st; 
 		while (sc.hasNext()) {
 			  st = sc.next();
-			  if(st.contains(".") || st.contains("?") || st.contains("\'") || st.contains(",") || st.contains(":") || st.contains(";") || st.contains("!") || st.contains("\"")) {
-				  LinkedList <Character>  stList = new LinkedList <Character>();
-				  char[] stArray = st.toCharArray();
-				  
-				  for(int i = 0; st.length() > i; i++) { 
-					  stList.add(stArray[i]);
-				  }
-				  
-				  if(stList.contains('.')) {stList.remove((Character)'.');}
-				  if(stList.contains('?')) {stList.remove((Character)'?');}
-				  if(stList.contains('\'')) {stList.remove((Character)'\'');}
-				  if(stList.contains(',')) {stList.remove((Character)',');}
-				  if(stList.contains(':')) {stList.remove((Character)':');}
-				  if(stList.contains(';')) {stList.remove((Character)';');}
-				  if(stList.contains('!')) {stList.remove((Character)'!');}
-				  if(stList.contains('\"')) {stList.remove((Character)'\"');}
-				  if(stList.contains('\'')) {stList.remove((Character)'\'');}
-				  
-				  String noApost = "";
-				  for(int i = 0; (stList.getLength() - 1) > i; i++) { 
-					  noApost += stList.getEntry(i);
-				  }
-				  
-				  st = noApost;
-			  }
-			  linkedList.add(st);
-			  writer.write(st);
-			  System.out.println(st);
-			  
-		}
-		writer.close();
+			  String f="";
+				
+				for(int i=0;i<st.length();i++) {
+					if(Character.isAlphabetic(st.charAt(i))){
+						f+=st.charAt(i);
+					}
+				}
+				
+				if(!f.equals("")) {
+					arrayList.add(f);
+					linkList.add(f);
+				}
+			}
+			
+			
+			int length = linkList.getLength();
+			
+			for(int i=0;i<length;i++) {
+				System.out.println(linkList.getEntry(i)+" "+arrayList.getEntry(i));
+			}
+			
+			System.out.println("\n");
+			
+			AList<String> removeWords = new AList<>();
+			
+			//remove all words starting with a
+			for(int i=0;i<length;i++) {
+				
+				String entry = linkList.getEntry(i);
+				
+				if(entry.toLowerCase().charAt(0)=='a') {
+					removeWords.add(entry);
+				}
+			}
+			
+			for(int i=0;i<removeWords.getLength();i++) {
+				
+				arrayList.remove(removeWords.getEntry(i));
+				linkList.remove(removeWords.getEntry(i));
+				
+			}
+			
+			System.out.println("new length: \narraylist: " +arrayList.getLength() +" \nlinkedlist: "+linkList.getLength());
+			
+			length=linkList.getLength();
+			
+			//ouput indices for to and be
+			System.out.println("\nindices of 'to':");
+			for(int i=0;i<length;i++) {
+				if(linkList.getEntry(i).toLowerCase().equals("to")) {
+					System.out.print(i+" ");
+				}
+				if(arrayList.getEntry(i).toLowerCase().equals("to")) {
+					System.out.print(i+" ");
+				}
+			}
+			
+			System.out.println("\nindices of 'be':");
+			for(int i=0;i<length;i++) {
+				if(linkList.getEntry(i).toLowerCase().equals("be")) {
+					System.out.print(i+" ");
+				}
+				if(arrayList.getEntry(i).toLowerCase().equals("be")) {
+					System.out.print(i+" ");
+				}
+			}
+			
+			
+			//change all fox to elephant
+			
+			
+			for(int i=0;i<length;i++) {
+				
+				if(linkList.getEntry(i).toLowerCase().equals("fox")) {
+					linkList.remove(i);
+					linkList.add(i, "elephant");
+					arrayList.remove(i);
+					arrayList.add(i, "elephant");
+				}
+				
+			}
+			
+			
+			
+			//print modified lists to text file
+			PrintWriter writer1 = new PrintWriter("test2.txt", "UTF-8");
+			
+			for(int i=0;i<length;i++) {
+				writer1.println(linkList.getEntry(i)+" "+arrayList.getEntry(i));
+			}
+			writer1.close();
+			
+			//clear lists
+			linkList.clear();
+			arrayList.clear();
+			
+			System.out.println("\nList lengths after clear: "+linkList.getLength()+" "+arrayList.getLength());
 		sc.close();
 		
 	}
