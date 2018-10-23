@@ -1,3 +1,4 @@
+package Lab4;
 import java.util.Arrays;
 
 public class AList <T> implements ListInterface <T>   {
@@ -91,7 +92,7 @@ public class AList <T> implements ListInterface <T>   {
     	return result;
     }
 
-    public boolean remove ( T anEntry) {
+    public boolean remove (T anEntry) {
     	for(int i=0; i<numberOfEntries; i++) {
     		if(anEntry.equals(list[i])) {
     			removeGap(i);

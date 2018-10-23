@@ -1,8 +1,16 @@
+package Lab4;
 
 public class LinkedList <T> implements ListInterface <T>{
 	
 	private Node firstNode;
-	private boolean initalized;
+    private int numberOfEntries;
+    private boolean initialized = false;
+    
+    public LinkedList () {
+    	firstNode = null;
+        numberOfEntries = 0;
+        initialized = true;
+    }
 	
 	private class Node{
 		T data;
@@ -34,63 +42,116 @@ public class LinkedList <T> implements ListInterface <T>{
 		}
 	}
 
-	@Override
 	public void add(T newEntry) {
-		// TODO Auto-generated method stub
-		
+		Node newNode = new Node(newEntry);
+		if(isEmpty()) {
+			firstNode = newNode;
+		}
+		else {
+			Node last = firstNode;
+			for(int i = 0; (numberOfEntries - 1) > i; i++) {
+				last = last.getNext();
+			}
+			last.setNext(newNode);
+		}
+		numberOfEntries ++;
 	}
 
 	@Override
 	public void add(int newPosition, T newEntry) {
-		// TODO Auto-generated method stub
-		
+		Node newNode = new Node(newEntry);
+		Node pos = firstNode;
+		for(int i = 0; newPosition > i; i++) {
+			pos = pos.getNext();
+		}
+		Node next = pos.getNext();
+		newNode.setNext(next);
+		pos.setNext(newNode);
+		numberOfEntries++;
 	}
 
-	@Override
 	public T remove(int givenPosition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean remove(T anEntry) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
+		if(givenPosition < 0 || (givenPosition > (numberOfEntries - 1))) {
+			throw new NullPointerException();
+		}
+		Node pos = firstNode;
+		for(int i = 0; givenPosition > i; i++) {
+			pos = pos.getNext();
+		}
+		Node toRemove = pos.getNext();
+		pos.setNext(toRemove.getNext());
+		numberOfEntries --;
+		
+		return toRemove.getData();
 		
 	}
 
-	@Override
+	public boolean remove(T anEntry) {
+		if(isEmpty()) {
+			return false;
+		}
+		else if (!contains(anEntry)) {
+			return false;
+		}
+		else {
+			Node newNode = new Node(anEntry);
+			Node curr = firstNode.getNext();
+			Node beforeCurr = firstNode;
+			
+			while(curr != newNode) {
+				beforeCurr = curr;
+				curr = curr.getNext();
+			}
+			
+			beforeCurr.setNext(curr.getNext());
+			numberOfEntries --;
+			
+			return true;
+		}
+	}
+
+	public void clear() {
+		firstNode = null;
+		numberOfEntries = 0;
+		
+	}
+
 	public T replace(int givenPosition, T newEntry) {
-		// TODO Auto-generated method stub
-		return null;
+		T result = remove(givenPosition);
+		add(givenPosition, newEntry);
+		
+		return result;
 	}
 
-	@Override
 	public T getEntry(int givenPosition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+		Node pos = firstNode;
+		for(int i = 0; givenPosition > i; i++) {
+			pos = pos.getNext();
+		}
+		return pos.getData();
+		}
+	
 	public boolean contains(T anEntry) {
-		// TODO Auto-generated method stub
+		Node pos = firstNode;
+
+		while(pos != null) {
+			if(pos.getData().equals(anEntry)) {
+				return true;
+			}
+			pos = pos.getNext();
+		}
 		return false;
 	}
 
-	@Override
 	public int getLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numberOfEntries;
 	}
 
-	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+		if(numberOfEntries == 0) {
+			return true;
+		}
+		
 		return false;
 	}
 
