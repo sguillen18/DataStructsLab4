@@ -1,103 +1,35 @@
 package Lab4;
 
-public class LinkedList <T> implements ListInterface <T>{
-	
-	private Node firstNode;
-    private int numberOfEntries;
-    private boolean initialized = false;
-    
-    public LinkedList () {
-    	firstNode = null;
-        numberOfEntries = 0;
-        initialized = true;
-    }
-	
+public class LinkedList<T> implements ListInterface<T> {
 	private class Node{
-		T data;
-		Node next;
-		
-		public Node(T data, Node nextNode) {
-			this.data = data;
-			next = nextNode;
+		private T data;
+		private Node next;
+		public Node(T data) {
+			this.data=data;
+			next=null;
 		}
-		
-		public Node(T newData) {
-			this(newData, null);
-		}
-		
 		public T getData() {
 			return data;
 		}
-		
-		public void setData(T newData) {
-			data = newData;
+		public void setData(T data) {
+			this.data=data;
 		}
-		
 		public Node getNext() {
 			return next;
 		}
+		public void setNext(Node n) {
+			next=n;
+		}
+	}
+	private Node firstNode;
+	private boolean initialized = false;  //optional, for security reasons
+	
+	public T getEntry(int i) {
 		
-		public void setNext(Node newNext) {
-			next = newNext;
-		}
+		return getNodeAt(i).data;
 		
 	}
-
-	public void add(T newEntry) {
-		Node newNode = new Node(newEntry);
-		if(isEmpty()) {
-			firstNode = newNode;
-		}
-		else {
-			Node last = firstNode;
-			for(int i = 0; (numberOfEntries - 1) > i; i++) {
-				last = last.getNext();
-			}
-			last.setNext(newNode);
-		}
-		numberOfEntries ++;
-	}
-
-	@Override
-	public void add(int newPosition, T newEntry) {
-		Node newNode = new Node(newEntry);
-		Node pos = firstNode;
-		for(int i = 0; newPosition > i; i++) {
-			pos = pos.getNext();
-		}
-		Node next = pos.getNext();
-		newNode.setNext(next);
-		pos.setNext(newNode);
-		numberOfEntries++;
-	}
-
-	public T remove (int givenPosition){
-		   if (isEmpty())
-		      throw new NullPointerException();
-		   if (givenPosition < 0 || givenPosition >= getLength())
-		      throw new IndexOutOfBoundsException();
-		   T dataItem = firstNode.getData();
-		            
-		   if (givenPosition == 0)
-		      firstNode = firstNode.getNext();
-		   else {
-		       int idx = 0;
-		       Node nextNode = firstNode;
-		       for (Node currNode = firstNode; nextNode != null; currNode = nextNode) {
-		          idx ++;
-		          nextNode = currNode.getNext();
-		          if (idx == givenPosition ){ // nextNode is to be removed 
-		             assert (nextNode != null);
-		             dataItem = nextNode.getData();
-		             currNode.setNext(nextNode.getNext());
-		             break;
-		          }
-		       }
-		    }
-		   return dataItem;
-		}
-
-
+	
 	private Node getNodeAt(int givenPosition) {
 		   assert (givenPosition >= 0 && givenPosition < getLength());
 		 
@@ -107,66 +39,160 @@ public class LinkedList <T> implements ListInterface <T>{
 		    return currentNode;
 		 }
 
+	
+	@Override
+	public void add(T newEntry) {
+	    Node newNode = new Node(newEntry);
+        
+	    if (firstNode == null)
+	        firstNode = newNode;
+	    else {
+	        boolean end = false;
+	        Node nextNode = firstNode.getNext();
+	        Node curr = firstNode;
+	            
+	        while (!end) {
+	            end = (nextNode == null);
+	            if (!end){
+	               curr = nextNode;
+	               assert (nextNode != null);
+	               nextNode = nextNode.getNext();
+	            }
+	        }
+	     assert (curr != null);
+	     curr.setNext(newNode);
+	   }   
+
+		
+	}
+
+	@Override
+	public void add(int newPosition, T newEntry) {
+		// TODO Auto-generated method stub
+		if (newPosition < 0 || newPosition > getLength())
+		      throw new IndexOutOfBoundsException();
+		        
+		   Node newNode = new Node(newEntry);
+		        
+		   if (newPosition == 0) {// the only value for the empty list
+		      newNode.setNext(firstNode);  
+		      firstNode = newNode;
+		   }
+		   else { // traverse the chain
+		      int idx = 0; boolean found = false;
+		      Node after = firstNode, before = null;
+		      do {
+		        if (idx == newPosition) {
+		          found = true;
+		          assert (before != null);
+		          before.setNext(newNode);
+		          newNode.setNext(after);
+		         }
+
+
+
+
+		        else {
+		          before = after;
+		          after = after.getNext();
+		          idx ++;
+		         }
+		       } while (!found);
+		    }
+
+	}
+	
+	public int getLength(){
+	    int numEntries = 0;
+	    Node curr;
+	    for (curr = firstNode; curr != null;
+	                               curr = curr.getNext())
+	       numEntries ++;  
+	    return numEntries;
+	}
+
+	
+	public T remove (int givenPosition){
+	    if (isEmpty())
+	       throw new NullPointerException();
+	    if (givenPosition < 0 || givenPosition >= getLength())
+	       throw new IndexOutOfBoundsException();
+	    T dataItem = firstNode.getData();
+	            
+	    if (givenPosition == 0)
+	       firstNode = firstNode.getNext();
+	    else {
+	       int idx = 0;
+	       Node nextNode = firstNode;
+	       for (Node curr = firstNode; nextNode != null; 
+	                                     curr = nextNode) {
+	          idx ++;
+	          nextNode = curr.getNext();
+	          if (idx == givenPosition ){ // nextNode is to be removed 
+	             assert (nextNode != null);
+	             dataItem = nextNode.getData();
+	             curr.setNext(nextNode.getNext());
+	             break;
+	            } 
+	         }
+	     }
+	    return dataItem;
+	}
+	
+	public boolean isEmpty() {
+		if(firstNode==null) {
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
 	public boolean remove(T anEntry) {
+		// TODO Auto-generated method stub
 		int i=0;
 		
 	    Node nextNode = firstNode;
-	    for (Node currNode = firstNode; nextNode != null; 
-	                                     currNode = nextNode) {
-	          if((currNode.getData()).equals(anEntry)) {
+	    for (Node curr = firstNode; nextNode != null; 
+	                                     curr = nextNode) {
+	          if(curr.data.equals(anEntry)) {
 	        	  remove(i);
-	        	  numberOfEntries--;
 	        	  return true;
 	          }
 	          
-	          nextNode = currNode.getNext();
+	          nextNode = curr.getNext();
 	          i++; 
 	     }
 	     
 		return false;
-
 	}
 
+	@Override
 	public void clear() {
-		firstNode = null;
-		numberOfEntries = 0;
 		
-	}
-
-	public T replace(int givenPosition, T newEntry) {
-		T result = remove(givenPosition);
-		add(givenPosition, newEntry);
-		
-		return result;
-	}
-
-	public T getEntry(int givenPosition) {
-		assert(givenPosition >= 0 && givenPosition < getLength());
-		return getNodeAt(givenPosition).getData();
+		while(!isEmpty()) {
+			Node curr=firstNode;
+			firstNode=firstNode.next;
+			curr=null;
+		}
 		
 	}
 	
-	public boolean contains(T anEntry) {
-		Node pos = firstNode;
-
-		while(pos != null) {
-			if((pos.getData()).equals(anEntry)) {
-				return true;
-			}
-			pos = pos.getNext();
-		}
-		return false;
-	}
-
-	public int getLength() {
-		return numberOfEntries;
-	}
-
-	public boolean isEmpty() {
-		if(numberOfEntries == 0) {
-			return true;
-		}
+	public T replace (int givenPosition, T newEntry) {
 		
+		T curr = remove(givenPosition);
+		add(givenPosition, newEntry);
+		return curr;
+	}
+
+	@Override
+	public boolean contains(T anEntry) {
+		// TODO Auto-generated method stub
+		Node curr;
+		
+		for (curr = firstNode; curr != null;
+                curr = curr.getNext())
+			if(curr.data.equals(anEntry)) return true;
 		return false;
 	}
 
